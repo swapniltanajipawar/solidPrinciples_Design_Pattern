@@ -1,0 +1,47 @@
+he Liskov Substitution Principle states that:
+
+"Objects of a superclass should be replaceable with objects of a subclass without affecting the correctness of the program."
+
+In simpler terms, this means that if you have a class B that is a subclass of class A, you should be able to substitute B objects wherever A objects are expected, and everything should continue to work correctly. The subclass should not break the functionality or violate the expectations set by the superclass.
+
+
+Suppose we have the following classes:
+
+java
+Copy code
+class Bird {
+    public void fly() {
+        System.out.println("Flying...");
+    }
+}
+If we create a subclass Penguin, and we know penguins cannot fly, we should rethink the design:
+
+java
+Copy code
+class Penguin extends Bird {
+    @Override
+    public void fly() {
+        throw new UnsupportedOperationException("Penguins can't fly");
+    }
+}
+This violates LSP because Penguin cannot be substituted in place of Bird without breaking the functionality. A better design might be to introduce an interface or rethink the inheritance hierarchy, like:
+
+====
+interface Flyable {
+    void fly();
+}
+
+class Bird {
+    // Bird class without fly() method
+}
+
+class Sparrow extends Bird implements Flyable {
+    public void fly() {
+        System.out.println("Flying...");
+    }
+}
+
+class Penguin extends Bird {
+    // No fly() method
+}
+Now, only birds that can fly implement the Flyable interface, adhering to the Liskov Substitution Principle.
